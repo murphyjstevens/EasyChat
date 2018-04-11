@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, sans-serif;
+  font-size: 1rem;
+}
+
+button {
+  border: none;
+  background: #265f82;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  transition: background .3s ease;
+}
+
+button:hover {
+  border: none;
+  background: #1F4C69;
+  color: white;
+  padding: 10px;
+}
+
+button:disabled {
+  cursor: default;
+  background: #698ea5;
+}

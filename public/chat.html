@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Chat | EasyChat</title>
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/chat.css">
+</head>
+
+<body>
+  <!-- <header>
+    jkjakljdf
+  </header> -->
+
+  <div class="chat">
+    <div class="sidebar">
+      <h3>Users</h3>
+      <div id="users"></div>
+    </div>
+
+    <div class="main">
+      <ol id="messages" class="messages"></ol>
+
+      <div class="input-area">
+        <form id="message-form">
+          <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
+          <button>Send</button>
+        </form>
+      </div>
+    </div>
+
+    <script id="message-template" type="text/template">
+      <li class="message">
+        <h4>{{from}}</h4>
+        <h5>{{timestamp}}</h5>
+        <div class="message-body">
+          <span>{{text}}</span>
+        </div>
+      </li>
+    </script>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/scripts/libs/jquery-3.3.1.min.js"></script>
+  <script src="/scripts/libs/moment.js"></script>
+  <script src="/scripts/libs/mustache.js"></script>
+  <script src="/scripts/libs/deparam.js"></script>
+  <script src="/scripts/chat.js"></script>
+</body>
+</html>
