@@ -1,3 +1,15 @@
+const colors = [
+  '#FF0000',
+  '#00b727',
+  '#0000FF',
+  '#008c96',
+  '#9f00b7',
+  '#b70055',
+  '#b7b300',
+  '#d67500',
+  '#000000'
+];
+
 var socket = io();
 
 function scrollToBottom () {
@@ -20,11 +32,12 @@ socket.on('connect', function () {
   var params = jQuery.deparam(window.location.search);
 
   socket.emit('join', params, function (err) {
+    console.log(params);
     if (err) {
       alert(err);
       window.location.href = '/';
     } else {
-      console.log('No error');
+      // console.log('No error');
     }
   });
 });
@@ -39,6 +52,7 @@ socket.on('sendMessage', function (message) {
   var html = Mustache.render(template, {
     text: message.text,
     from: message.from,
+    color: colors[message.color],
     timestamp: formattedTime
   });
 
@@ -50,7 +64,8 @@ socket.on('updateUserList', function (users) {
   var ol = jQuery('<ol></ol>');
 
   users.forEach(function (user) {
-    ol.append(jQuery('<li></li>').text(user));
+    console.log(user);
+    ol.append(jQuery('<li></li>').css('color', colors[user.color]).text(user.name));
   });
 
   jQuery('#users').html(ol);

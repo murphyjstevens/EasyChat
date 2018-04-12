@@ -17,6 +17,8 @@ var io = socketIO(server);
 var users = new Users();
 var rooms = new Rooms();
 
+const colorCount = 9;
+
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
@@ -28,7 +30,7 @@ io.on('connection', (socket) => {
     params.room = params.room.toLowerCase();
     var roomUserList = users.getUserList(params.room);
 
-    if (roomUserList.find((user) => user.toLowerCase() === params.name.toLowerCase())) {
+    if (roomUserList.find((user) => user.name.toLowerCase() === params.name.toLowerCase())) {
       console.log(params.name);
       return callback('That name is already in use for that room');
     }
@@ -38,11 +40,11 @@ io.on('connection', (socket) => {
     }
     socket.join(params.room);
     users.removeUser(socket.id);
-    users.addUser(socket.id, params.name, params.room);
+    users.addUser(socket.id, params.name, Math.floor(Math.random() * colorCount), params.room);
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('sendMessage', generateMessage('Admin', 'Welcome to the chat app'));
-    socket.broadcast.to(params.room).emit('sendMessage', generateMessage('Admin', `${params.name} has joined.`));
+    // socket.emit('sendMessage', generateMessage('Admin', colorCount, 'Welcome to the chat app'));
+    // socket.broadcast.to(params.room).emit('sendMessage', generateMessage('Admin', colorCount, `${params.name} has joined.`));
 
     callback();
   });
@@ -51,7 +53,7 @@ io.on('connection', (socket) => {
     var user = users.getUser(socket.id);
 
     if (user && isRealString(message.text)) {
-      io.to(user.room).emit('sendMessage', generateMessage(user.name, message.text));
+      io.to(user.room).emit('sendMessage', generateMessage(user.name, user.color, message.text));
     }
 
     callback();
@@ -66,7 +68,7 @@ io.on('connection', (socket) => {
     }
     if (user && !room) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-      io.to(user.room).emit('sendMessage', generateMessage('Admin', `${user.name} has left.`));
+      // io.to(user.room).emit('sendMessage', generateMessage('Admin', colorCount, `${user.name} has left.`));
     }
   });
 });
